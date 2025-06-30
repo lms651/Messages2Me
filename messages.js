@@ -7,6 +7,12 @@ function init() {
         onSubmit();
         displayList();
     })
+    const clearBtn = document.getElementById("clear-button");
+    clearBtn.addEventListener('click', () => {
+        onClear();
+        console.log("on clear called")
+        displayList();
+    })
 }
 
 function onSubmit() {
@@ -61,6 +67,10 @@ function onDelete(message) {
     const messageToDelete = message;
     messageSet.delete(messageToDelete);
     displayList();
+}
+
+function onClear() {
+    messageSet.clear();
 }
 
 export {
