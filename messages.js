@@ -9,6 +9,7 @@ function init() {
     })
     const clearBtn = document.getElementById("clear-button");
     clearBtn.addEventListener('click', () => {
+        showWarning();
         onClear();
         console.log("on clear called")
         displayList();
@@ -71,6 +72,12 @@ function onDelete(message) {
 
 function onClear() {
     messageSet.clear();
+}
+
+
+function showWarning() {
+    console.log('show warning called');
+    toastr.warning("All messages will be forever lost and are unrecoverable. Are you sure?", "Warning");
 }
 
 export {
