@@ -8,11 +8,26 @@ function init() {
         displayList();
     })
     const clearBtn = document.getElementById("clear-button");
+    const cancelClearBtn = document.getElementById("cancel-clear");
+    const confirmClearBtn = document.getElementById("confirm-clear");
+
     clearBtn.addEventListener('click', () => {
         showWarning();
-        onClear();
-        console.log("on clear called")
-        displayList();
+        showConfirmActions();
+
+        cancelClearBtn.addEventListener('click', () => {
+            onCancelClear();
+        })
+
+        confirmClearBtn.addEventListener('click', () => {
+            onConfirmClear();
+            displayList();
+        })
+    })
+
+    const sendBtn = document.getElementById("send-button");
+    sendBtn.addEventListener('click', () => {
+        showOnSend();
     })
 }
 
@@ -37,7 +52,7 @@ function displayList() {
 
         // Edit button
         const editBtn = document.createElement('button');
-        editBtn.innerText = 'Edit';
+        editBtn.innerText = '✎';
         editBtn.classList.add("px-2", "py-1", "bg-yellow-200", "rounded", "mr-1", "opacity-40");
         editBtn.addEventListener('click', () => onEdit(message));
 
@@ -70,14 +85,31 @@ function onDelete(message) {
     displayList();
 }
 
-function onClear() {
-    messageSet.clear();
+function showConfirmActions() {
+    const actionsContainer = document.getElementById('confirm-actions');
+    actionsContainer.classList.remove('hidden');
 }
 
+function onConfirmClear() {
+    messageSet.clear();
+    const actionsContainer = document.getElementById('confirm-actions');
+    actionsContainer.classList.add('hidden');
+
+}
+
+function onCancelClear() {
+    const actionsContainer = document.getElementById('confirm-actions');
+    actionsContainer.classList.add('hidden');
+}
 
 function showWarning() {
     console.log('show warning called');
-    toastr.warning("All messages will be forever lost and are unrecoverable. Are you sure?", "Warning");
+    toastr.warning("All messages will be forever lost and are unrecoverable. Are you sure?", "Warning:");
+}
+
+function showOnSend() {
+    toastr.success("Your messages have been sent!", "Success:");
+
 }
 
 export {
