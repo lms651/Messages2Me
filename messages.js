@@ -27,14 +27,16 @@ function init() {
 
     const sendBtn = document.getElementById("send-button");
     sendBtn.addEventListener('click', () => {
-        showOnSend();
+        onSend();
     })
 }
 
 function onSubmit() {
-    const messageTxt = document.getElementById('input-text').value;
+    let inputField = document.getElementById('input-text');
+    const messageTxt = inputField.value;
     console.log(messageTxt);
     messageSet.add(messageTxt);
+    inputField.value = ''; // clears text field
 }
 
 function displayList() {
@@ -53,13 +55,13 @@ function displayList() {
         // Edit button
         const editBtn = document.createElement('button');
         editBtn.innerText = '✎';
-        editBtn.classList.add("px-2", "py-1", "bg-yellow-200", "rounded", "mr-1", "opacity-40");
+        editBtn.classList.add("px-2", "py-1", "bg-yellow-200", "rounded", "mr-1", "opacity-60");
         editBtn.addEventListener('click', () => onEdit(message));
 
         // Delete button
         const deleteBtn = document.createElement('button');
         deleteBtn.innerText = 'X';
-        deleteBtn.classList.add("px-2", "py-1", "bg-red-200", "rounded", "mr-1", "opacity-40");
+        deleteBtn.classList.add("px-2", "py-1", "bg-red-200", "rounded", "mr-1", "opacity-60");
         deleteBtn.addEventListener('click', () => onDelete(message));
 
         // Append to list item
@@ -107,9 +109,15 @@ function showWarning() {
     toastr.warning("All messages will be forever lost and are unrecoverable. Are you sure?", "Warning:");
 }
 
-function showOnSend() {
-    toastr.success("Your messages have been sent!", "Success:");
+function clearOnSend() {
+    messageSet.clear();
+    displayList();
+}
 
+function onSend() {
+    toastr.success("Your messages have been sent & saved to local storage!", "Success:");
+    localStorage.setItem('messages', JSON.stringify([...messageSet]));
+    clearOnSend();
 }
 
 export {
