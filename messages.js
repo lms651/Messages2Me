@@ -13,16 +13,6 @@ function init() {
 
     clearBtn.addEventListener('click', () => {
         showWarning();
-        showConfirmActions();
-
-        cancelClearBtn.addEventListener('click', () => {
-            onCancelClear();
-        })
-
-        confirmClearBtn.addEventListener('click', () => {
-            onConfirmClear();
-            displayList();
-        })
     })
 
     const sendBtn = document.getElementById("send-button");
@@ -34,7 +24,6 @@ function init() {
 function onSubmit() {
     let inputField = document.getElementById('input-text');
     const messageTxt = inputField.value;
-    console.log(messageTxt);
     messageSet.add(messageTxt);
     inputField.value = ''; // clears text field
 }
@@ -87,26 +76,25 @@ function onDelete(message) {
     displayList();
 }
 
-function showConfirmActions() {
-    const actionsContainer = document.getElementById('confirm-actions');
-    actionsContainer.classList.remove('hidden');
-}
-
 function onConfirmClear() {
     messageSet.clear();
-    const actionsContainer = document.getElementById('confirm-actions');
-    actionsContainer.classList.add('hidden');
-
-}
-
-function onCancelClear() {
-    const actionsContainer = document.getElementById('confirm-actions');
-    actionsContainer.classList.add('hidden');
+    displayList();
 }
 
 function showWarning() {
-    console.log('show warning called');
-    toastr.warning("All messages will be forever lost and are unrecoverable. Are you sure?", "Warning:");
+    toastr.warning(
+    "All messages will be forever lost and are unrecoverable. Are you sure?<br /><br /><button type='button' id='confirmationButtonYes' class='btn clear'>Yes</button>",
+    "Warning:",
+        {
+            closeButton: false,
+            allowHtml: true,
+            onShown: function (toast) {
+                $("#confirmationButtonYes").click(function(){
+                onConfirmClear();
+                });
+            }   
+        }
+    );
 }
 
 function clearOnSend() {
